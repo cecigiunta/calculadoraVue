@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./styles.css">
+        <title>Calculadora</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="./components/teclado.js"></script>
+        <script src="./components/visor.js"></script>
+    </head>
+    <body>
+    <div class="container" id="calculadoraVue">     <!--el id es el nombre de mi instancia Vue-->
+        <span class="title">Calculadora Vue</span>
+        <visor 
+            v-bind:valor-operacion="valorOperacion"     
+            v-bind:mostrar-resultado="mostrarResultado"
+            v-bind:clear = "clear"
+            v-bind:operacion="operacion"
+            v-bind:resultado ="resultado"     
+        >
+        </visor>
+        <teclado 
+            v-bind:valor-operacion="valorOperacion"
+            v-bind:mostrar-resultado="mostrarResultado"
+            v-bind:clear = "clear"
+            v-bind:operacion="operacion"
+            v-bind:resultado ="resultado"
+        >
+        </teclado>
+            
+    </div>
+    <script>
+        new Vue({
+            el: '#calculadoraVue',
+            data: {                //*Aca se definen las variables
+                operacion : "",
+                resultado: "",
+            },
+            methods: {
+                valorOperacion: function(valor){
+                    this.resultado += valor;
+                },
+                clear: function() {
+                    this.operacion = "";
+                    this.resultado = "";
+                    console.log("Clear");
+                },
+                mostrarResultado: function() {
+                    let calcular = this.resultado;
+                    this.operacion = calcular;
+                    try {
+                    this.resultado = eval(calcular);
+                    console.log("Resultado: " + this.resultado);
+                    } catch {
+                        this.resultado = "Error";
+                    }
+                    
+                    if(this.resultado == Infinity){     // Si se divide por 0, que muestre Error en vez de Infinity en el display
+                        this.resultado = "Error";
+                    }
+                }
+            },
+        })
+    </script>
+
+</body>
+</html>
